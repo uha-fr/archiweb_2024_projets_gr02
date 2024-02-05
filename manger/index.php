@@ -6,9 +6,22 @@ define('CLASSDIR', ROOT . DS . 'src');
 define('CONTROLLERSDIR', CLASSDIR . DS . 'Controllers');
 define('MODELSDIR', CLASSDIR . DS . 'Models');  
 define('VIEWSDIR', CLASSDIR . DS . 'View');
-
 require CLASSDIR . DS . 'Router.php';
 
+
+require_once 'src/Config/env.php';
+$request = $_SERVER['REQUEST_URI'];
+$path = rtrim(parse_url($request, PHP_URL_PATH), '/');
+$method = $_SERVER['REQUEST_METHOD'];
+
+if($path === '/archiweb_2024_projets_gr02/manger' && $method === 'GET') {
+    require_once CONTROLLERSDIR . DS . 'HomeController.php';
+    $controller = new HomeController();
+    $controller->viewStart();
+}
+
+
+/*
 $request = $_SERVER['REQUEST_URI'];
 $path = parse_url($request, PHP_URL_PATH); // Récupérer la route sans les paramètres GET
 
@@ -28,4 +41,4 @@ if (null !== $queryString) {
 $r = new Router();
 $r->manageRequest($path,$queryParams);  // Analyse, dispatch
 
-?>
+*/

@@ -1,13 +1,17 @@
 <?php
-
+#-------------------------------------------------------------------
+# TO SIMPLIFY THE ROUTING PROCESS WE WILL GIVE UP THE USE OF ROUTER.
+# THE index.php IS THE MAIN ROUTER FOR OUR APP AT LEAST FOR NOW 
+# :) :o :c :3 
+#---------------------------------------------------------------------
 class Router
 {
-    function ManageRequest($request,$queryParams)// TRES IMPORTANT: La méthode prend en paramètre la route ET un tableau avec tous les paramètre GET
+    function manageRequest($request,$queryParams)// TRES IMPORTANT: La méthode prend en paramètre la route ET un tableau avec tous les paramètre GET
     {
        
-        if($request == '/manger/')
+        if($request == '/archiweb_2024_projets_gr02/manger/')
         {
-            require CONTROLLERSDIR.DS.'HomeController.php';
+            require CONTROLLERSDIR. DS.'HomeController.php';
             $c = new HomeController();
             $c->viewStart();
         }
