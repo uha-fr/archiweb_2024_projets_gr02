@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Feb 03, 2024 at 05:36 AM
+-- Generation Time: Feb 08, 2024 at 06:15 PM
 -- Server version: 8.2.0
 -- PHP Version: 8.2.13
 
@@ -49,13 +49,20 @@ CREATE TABLE IF NOT EXISTS `consommationsrecettes` (
 
 DROP TABLE IF EXISTS `etapesrecettes`;
 CREATE TABLE IF NOT EXISTS `etapesrecettes` (
-  `ID_Etape` int NOT NULL,
+  `ID_Etape` int NOT NULL AUTO_INCREMENT,
   `ID_Recette` int NOT NULL,
   `OrdreEtape` int NOT NULL,
   `DescriptionEtape` text NOT NULL,
   PRIMARY KEY (`ID_Etape`),
   KEY `ID_Recette` (`ID_Recette`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `etapesrecettes`
+--
+
+INSERT INTO `etapesrecettes` (`ID_Etape`, `ID_Recette`, `OrdreEtape`, `DescriptionEtape`) VALUES
+(1, 1, 1, 'Preheat your oven to 350°F (175°C).');
 
 -- --------------------------------------------------------
 
@@ -65,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `etapesrecettes` (
 
 DROP TABLE IF EXISTS `evaluationsrecettes`;
 CREATE TABLE IF NOT EXISTS `evaluationsrecettes` (
-  `ID_Evaluation` int NOT NULL,
+  `ID_Evaluation` int NOT NULL AUTO_INCREMENT,
   `ID_Recette` int NOT NULL,
   `ID_Utilisateur` int NOT NULL,
   `Note` int NOT NULL,
@@ -84,7 +91,7 @@ CREATE TABLE IF NOT EXISTS `evaluationsrecettes` (
 
 DROP TABLE IF EXISTS `favorisutilisateurs`;
 CREATE TABLE IF NOT EXISTS `favorisutilisateurs` (
-  `ID_Favori` int NOT NULL,
+  `ID_Favori` int NOT NULL AUTO_INCREMENT,
   `ID_Utilisateur` int NOT NULL,
   `ID_Recette` int NOT NULL,
   PRIMARY KEY (`ID_Favori`),
@@ -100,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `favorisutilisateurs` (
 
 DROP TABLE IF EXISTS `historiquerecherches`;
 CREATE TABLE IF NOT EXISTS `historiquerecherches` (
-  `ID_Recherche` int NOT NULL,
+  `ID_Recherche` int NOT NULL AUTO_INCREMENT,
   `ID_Utilisateur` int NOT NULL,
   `TermeRecherche` varchar(255) NOT NULL,
   `DateRecherche` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -116,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `historiquerecherches` (
 
 DROP TABLE IF EXISTS `informationnutritionnelle`;
 CREATE TABLE IF NOT EXISTS `informationnutritionnelle` (
-  `ID_Ingredient` int NOT NULL,
+  `ID_Ingredient` int NOT NULL AUTO_INCREMENT,
   `Lipides` float DEFAULT NULL,
   `Proteines` float DEFAULT NULL,
   `Glucides` float DEFAULT NULL,
@@ -131,7 +138,7 @@ CREATE TABLE IF NOT EXISTS `informationnutritionnelle` (
 
 DROP TABLE IF EXISTS `ingredients`;
 CREATE TABLE IF NOT EXISTS `ingredients` (
-  `ID_Ingredient` int NOT NULL,
+  `ID_Ingredient` int NOT NULL AUTO_INCREMENT,
   `Nom` varchar(255) NOT NULL,
   `CaloriesParUnite` float DEFAULT NULL,
   `Unite` varchar(255) DEFAULT NULL,
@@ -146,7 +153,7 @@ CREATE TABLE IF NOT EXISTS `ingredients` (
 
 DROP TABLE IF EXISTS `journalisation`;
 CREATE TABLE IF NOT EXISTS `journalisation` (
-  `ID_Log` int NOT NULL,
+  `ID_Log` int NOT NULL AUTO_INCREMENT,
   `TimeStamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `ID_Utilisateur` int DEFAULT NULL,
   `Action` text NOT NULL,
@@ -165,7 +172,7 @@ CREATE TABLE IF NOT EXISTS `journalisation` (
 
 DROP TABLE IF EXISTS `preferencesutilisateurs`;
 CREATE TABLE IF NOT EXISTS `preferencesutilisateurs` (
-  `ID_Preference` int NOT NULL,
+  `ID_Preference` int NOT NULL AUTO_INCREMENT,
   `ID_Utilisateur` int NOT NULL,
   `TypePreference` varchar(255) NOT NULL,
   `Description` varchar(255) DEFAULT NULL,
@@ -181,7 +188,7 @@ CREATE TABLE IF NOT EXISTS `preferencesutilisateurs` (
 
 DROP TABLE IF EXISTS `profilsutilisateurs`;
 CREATE TABLE IF NOT EXISTS `profilsutilisateurs` (
-  `ID_Profil` int NOT NULL,
+  `ID_Profil` int NOT NULL AUTO_INCREMENT,
   `ID_Utilisateur` int NOT NULL,
   `Taille` float DEFAULT NULL,
   `Poids` float DEFAULT NULL,
@@ -200,7 +207,7 @@ CREATE TABLE IF NOT EXISTS `profilsutilisateurs` (
 
 DROP TABLE IF EXISTS `recettes`;
 CREATE TABLE IF NOT EXISTS `recettes` (
-  `ID_Recette` int NOT NULL,
+  `ID_Recette` int NOT NULL AUTO_INCREMENT,
   `Nom` varchar(255) NOT NULL,
   `Description` text,
   `TempsPreparation` int DEFAULT NULL,
@@ -213,7 +220,14 @@ CREATE TABLE IF NOT EXISTS `recettes` (
   `DateMiseAJour` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID_Recette`),
   KEY `CreePar` (`CreePar`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `recettes`
+--
+
+INSERT INTO `recettes` (`ID_Recette`, `Nom`, `Description`, `TempsPreparation`, `TempsCuisson`, `CaloriesTotales`, `CreePar`, `Visibilite`, `TypeRepas`, `DateCreation`, `DateMiseAJour`) VALUES
+(1, 'Chocolate Cake', 'Delicious and rich chocolate cake', 20, 30, 450, 1, 'Public', NULL, '2024-02-08 18:08:15', '2024-02-08 18:08:15');
 
 -- --------------------------------------------------------
 
@@ -223,7 +237,7 @@ CREATE TABLE IF NOT EXISTS `recettes` (
 
 DROP TABLE IF EXISTS `recettesingredients`;
 CREATE TABLE IF NOT EXISTS `recettesingredients` (
-  `ID_RecetteIngredient` int NOT NULL,
+  `ID_RecetteIngredient` int NOT NULL AUTO_INCREMENT,
   `ID_Recette` int NOT NULL,
   `ID_Ingredient` int NOT NULL,
   `Quantite` float NOT NULL,
@@ -240,7 +254,7 @@ CREATE TABLE IF NOT EXISTS `recettesingredients` (
 
 DROP TABLE IF EXISTS `roles`;
 CREATE TABLE IF NOT EXISTS `roles` (
-  `ID_Role` int NOT NULL,
+  `ID_Role` int NOT NULL AUTO_INCREMENT,
   `Nom_Role` varchar(255) NOT NULL,
   PRIMARY KEY (`ID_Role`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -253,7 +267,7 @@ CREATE TABLE IF NOT EXISTS `roles` (
 
 DROP TABLE IF EXISTS `utilisateurs`;
 CREATE TABLE IF NOT EXISTS `utilisateurs` (
-  `ID_Utilisateur` int NOT NULL,
+  `ID_Utilisateur` int NOT NULL AUTO_INCREMENT,
   `Nom_Utilisateur` varchar(255) NOT NULL,
   `Hash_MotDePasse` varchar(255) NOT NULL COMMENT 'Mot de passe haché avec un algorithme fort',
   `Email` varchar(191) NOT NULL,
@@ -261,7 +275,14 @@ CREATE TABLE IF NOT EXISTS `utilisateurs` (
   `DateMiseAJour` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID_Utilisateur`),
   UNIQUE KEY `Email` (`Email`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `utilisateurs`
+--
+
+INSERT INTO `utilisateurs` (`ID_Utilisateur`, `Nom_Utilisateur`, `Hash_MotDePasse`, `Email`, `DateCreation`, `DateMiseAJour`) VALUES
+(1, 'ChefJohn', 'hashed_password_placeholder', 'chefjohn@example.com', '2024-02-08 18:08:15', '2024-02-08 18:08:15');
 
 -- --------------------------------------------------------
 
@@ -271,7 +292,7 @@ CREATE TABLE IF NOT EXISTS `utilisateurs` (
 
 DROP TABLE IF EXISTS `utilisateursroles`;
 CREATE TABLE IF NOT EXISTS `utilisateursroles` (
-  `ID_UtilisateurRole` int NOT NULL,
+  `ID_UtilisateurRole` int NOT NULL AUTO_INCREMENT,
   `ID_Utilisateur` int DEFAULT NULL,
   `ID_Role` int DEFAULT NULL,
   PRIMARY KEY (`ID_UtilisateurRole`),

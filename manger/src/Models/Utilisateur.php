@@ -3,14 +3,13 @@
 Class Utilisateur{
     private $idUtilisateur;
     private $nomComplet;
-    private $hashedMotDePasse;
-    private $email;
+   
     private $taille;
     private $poids;
     private $age;
     private $genre;
     private $ObjectifCalorique;
-    private $role;
+    
 
     
 
@@ -35,14 +34,7 @@ Class Utilisateur{
         return $this;
     }
 
-    /**
-     * Get the value of hashedMotDePasse
-     */ 
-    public function getHashedMotDePasse()
-    {
-        return $this->hashedMotDePasse;
-    }
-
+   
     /**
      * Set the value of hashedMotDePasse
      *
@@ -55,14 +47,7 @@ Class Utilisateur{
         return $this;
     }
 
-    /**
-     * Get the value of email
-     */ 
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
+  
     /**
      * Set the value of email
      *
@@ -202,13 +187,6 @@ Class Utilisateur{
         return $this;
     }
 
-    /**
-     * Get the value of role
-     */ 
-    public function getRole()
-    {
-        return $this->role;
-    }
 
     /**
      * Set the value of role

@@ -4,4 +4,6 @@ Class Genre {
     const MASCULIN = 'Masculin';
     const FEMININ = 'Féminin';
     const AUTRE = 'Autre';
+
+    const UNDEFINED = 'Undefined';
 }
