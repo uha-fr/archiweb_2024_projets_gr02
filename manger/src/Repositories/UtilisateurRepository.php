@@ -7,6 +7,30 @@ class UtilisateurRepository{
         $this->pdo = Database::getInstance()->getConnection();
     }
 
+/**
+     * Finds a user by ID. Returns user data as an associative array or false if not found.
+     * @param int $id The user's ID.
+     * @return array|false User data or false if not found.
+     */
+    public function findById($id) {
+        $statement = $this->pdo->prepare("SELECT * FROM `utilisateurs` WHERE ID_Utilisateur = :id");
+        $statement->execute(['id' => $id]);
+        $row = $statement->fetch(PDO::FETCH_ASSOC);
+        return $row;
+    }
+    
+  /**
+     * Finds a user's name by ID. Returns the name or false if not found.
+     * @param int $id The user's ID.
+     * @return string|false User's name or false if not found.
+     */
+    public function findNameById($id) {
+        $statement = $this->pdo->prepare("SELECT Nom_Utilisateur FROM `utilisateurs` WHERE ID_Utilisateur = :id");
+        $statement->execute(['id' => $id]);
+        $row = $statement->fetch(PDO::FETCH_ASSOC);
+        return $row['name'];
+    }
+}
     # IMPORTANT NOTE 
     /* 
         LATER I WILL SEPRATE THIS TO MY SERVICE FOR HANDELING DIFFERENT SCENARIOS 
@@ -18,6 +42,7 @@ class UtilisateurRepository{
             FETCH ALL RETURN AN EMPTY ARRAY
     */
     # END NOTE. Happy Coding :) 
+    /*
     public function findById($id) {
         $statement = $this->pdo->prepare("SELECT Nom_Utilisateur FROM `utilisateurs` WHERE ID_Utilisateur = :id");
         $statement->execute(['id' => $id]);
@@ -53,5 +78,4 @@ class UtilisateurRepository{
         return $user;
     }
     
-
-}
+*/
