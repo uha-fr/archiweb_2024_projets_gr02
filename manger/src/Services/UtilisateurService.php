@@ -10,6 +10,7 @@ Class UtilisateurService{
 
     public function getUtilisateurById($id) {
         $userName = $this->utilisateurRepo->findNameById($id); 
+        
         if(!$userName){
             throw new Exception("User with ID $id not found.");
         }

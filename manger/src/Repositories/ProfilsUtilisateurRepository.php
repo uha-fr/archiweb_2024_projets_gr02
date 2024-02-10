@@ -1,10 +1,17 @@
 <?php
+#### Abstraction of ProfilsUtilisateurRepository
+interface ProfilsUtilisateurRepositoryInterface{
+    public function findById($id);
+    public function findAll();
+}
 
+####
 
-Class ProfilsUtilisateurRepository{
-    private $pdo;
+Class ProfilsUtilisateurRepository implements ProfilsUtilisateurRepositoryInterface{
+    private $query;
+    private const TABLE = "profilsutilisateurs";
     public function __construct(){
-        $this->pdo = Database::getInstance()->getConnection();
+        $this->query = new DBQueryExecutor();
     }
 
   /**
@@ -15,9 +22,11 @@ Class ProfilsUtilisateurRepository{
      * @return bool True if found, false if not.
      */
     public function findById($id){
-        $statement = $this->pdo->prepare("SELECT * FROM `profilsutilisateurs` WHERE ID_Utilisateur = :id");
-        $statement->execute(['id' => $id]);
-        $userData = $statement->fetch(PDO::FETCH_ASSOC);
-        return $userData;
+        return $this->query->selectById($id, self::TABLE);
+    }
+
+    public function findAll(){
+      
+        return $this->query->selectAll(self::TABLE);
     }
 }
