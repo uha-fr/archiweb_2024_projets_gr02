@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3306
--- Generation Time: Feb 08, 2024 at 06:15 PM
--- Server version: 8.2.0
--- PHP Version: 8.2.13
+-- Hôte : 127.0.0.1
+-- Généré le : dim. 11 fév. 2024 à 21:01
+-- Version du serveur : 10.4.32-MariaDB
+-- Version de PHP : 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,287 +18,479 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `manger-db`
+-- Base de données : `manger`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `consommationsrecettes`
+-- Structure de la table `etape`
 --
 
-DROP TABLE IF EXISTS `consommationsrecettes`;
-CREATE TABLE IF NOT EXISTS `consommationsrecettes` (
-  `ID_Consommation` int NOT NULL,
-  `ID_Utilisateur` int NOT NULL,
-  `ID_Recette` int NOT NULL,
-  `DateConsommation` date NOT NULL,
-  `QuantiteConsommee` float DEFAULT NULL,
-  `TypeRepas` varchar(255) DEFAULT NULL,
-  `TaillePortion` float DEFAULT NULL,
-  PRIMARY KEY (`ID_Consommation`),
-  KEY `ID_Utilisateur` (`ID_Utilisateur`),
-  KEY `ID_Recette` (`ID_Recette`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `etape` (
+  `identifiant` int(11) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `identifiant_recette` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `etapesrecettes`
+-- Structure de la table `ingredient`
 --
 
-DROP TABLE IF EXISTS `etapesrecettes`;
-CREATE TABLE IF NOT EXISTS `etapesrecettes` (
-  `ID_Etape` int NOT NULL AUTO_INCREMENT,
-  `ID_Recette` int NOT NULL,
-  `OrdreEtape` int NOT NULL,
-  `DescriptionEtape` text NOT NULL,
-  PRIMARY KEY (`ID_Etape`),
-  KEY `ID_Recette` (`ID_Recette`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `etapesrecettes`
---
-
-INSERT INTO `etapesrecettes` (`ID_Etape`, `ID_Recette`, `OrdreEtape`, `DescriptionEtape`) VALUES
-(1, 1, 1, 'Preheat your oven to 350°F (175°C).');
+CREATE TABLE `ingredient` (
+  `identifiant` int(11) NOT NULL,
+  `nom` varchar(255) NOT NULL,
+  `calories_par_unite` float DEFAULT NULL,
+  `unite` varchar(255) DEFAULT NULL,
+  `identifiant_image` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `evaluationsrecettes`
+-- Structure de la table `journalisation`
 --
 
-DROP TABLE IF EXISTS `evaluationsrecettes`;
-CREATE TABLE IF NOT EXISTS `evaluationsrecettes` (
-  `ID_Evaluation` int NOT NULL AUTO_INCREMENT,
-  `ID_Recette` int NOT NULL,
-  `ID_Utilisateur` int NOT NULL,
-  `Note` int NOT NULL,
-  `Commentaire` text,
-  `DateEvaluation` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ID_Evaluation`),
-  KEY `ID_Recette` (`ID_Recette`),
-  KEY `ID_Utilisateur` (`ID_Utilisateur`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `favorisutilisateurs`
---
-
-DROP TABLE IF EXISTS `favorisutilisateurs`;
-CREATE TABLE IF NOT EXISTS `favorisutilisateurs` (
-  `ID_Favori` int NOT NULL AUTO_INCREMENT,
-  `ID_Utilisateur` int NOT NULL,
-  `ID_Recette` int NOT NULL,
-  PRIMARY KEY (`ID_Favori`),
-  UNIQUE KEY `ID_Utilisateur` (`ID_Utilisateur`,`ID_Recette`),
-  KEY `ID_Recette` (`ID_Recette`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `historiquerecherches`
---
-
-DROP TABLE IF EXISTS `historiquerecherches`;
-CREATE TABLE IF NOT EXISTS `historiquerecherches` (
-  `ID_Recherche` int NOT NULL AUTO_INCREMENT,
-  `ID_Utilisateur` int NOT NULL,
-  `TermeRecherche` varchar(255) NOT NULL,
-  `DateRecherche` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ID_Recherche`),
-  KEY `ID_Utilisateur` (`ID_Utilisateur`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `informationnutritionnelle`
---
-
-DROP TABLE IF EXISTS `informationnutritionnelle`;
-CREATE TABLE IF NOT EXISTS `informationnutritionnelle` (
-  `ID_Ingredient` int NOT NULL AUTO_INCREMENT,
-  `Lipides` float DEFAULT NULL,
-  `Proteines` float DEFAULT NULL,
-  `Glucides` float DEFAULT NULL,
-  PRIMARY KEY (`ID_Ingredient`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ingredients`
---
-
-DROP TABLE IF EXISTS `ingredients`;
-CREATE TABLE IF NOT EXISTS `ingredients` (
-  `ID_Ingredient` int NOT NULL AUTO_INCREMENT,
-  `Nom` varchar(255) NOT NULL,
-  `CaloriesParUnite` float DEFAULT NULL,
-  `Unite` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`ID_Ingredient`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `journalisation`
---
-
-DROP TABLE IF EXISTS `journalisation`;
-CREATE TABLE IF NOT EXISTS `journalisation` (
-  `ID_Log` int NOT NULL AUTO_INCREMENT,
-  `TimeStamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `ID_Utilisateur` int DEFAULT NULL,
-  `Action` text NOT NULL,
+CREATE TABLE `journalisation` (
+  `ID_Log` int(11) NOT NULL,
+  `TimeStamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `ID_Utilisateur` int(11) DEFAULT NULL,
+  `Action` text DEFAULT NULL,
   `IP_Adresse` varchar(255) DEFAULT NULL,
   `Navigateur` varchar(255) DEFAULT NULL,
-  `ResultatAction` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`ID_Log`),
-  KEY `ID_Utilisateur` (`ID_Utilisateur`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `ResultatAction` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `preferencesutilisateurs`
+-- Structure de la table `preference`
 --
 
-DROP TABLE IF EXISTS `preferencesutilisateurs`;
-CREATE TABLE IF NOT EXISTS `preferencesutilisateurs` (
-  `ID_Preference` int NOT NULL AUTO_INCREMENT,
-  `ID_Utilisateur` int NOT NULL,
-  `TypePreference` varchar(255) NOT NULL,
-  `Description` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`ID_Preference`),
-  KEY `ID_Utilisateur` (`ID_Utilisateur`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `preference` (
+  `identifiant` int(11) NOT NULL,
+  `nom` varchar(30) NOT NULL,
+  `description` int(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `profilsutilisateurs`
+-- Structure de la table `recette`
 --
 
-DROP TABLE IF EXISTS `profilsutilisateurs`;
-CREATE TABLE IF NOT EXISTS `profilsutilisateurs` (
-  `ID_Profil` int NOT NULL AUTO_INCREMENT,
-  `ID_Utilisateur` int NOT NULL,
-  `Taille` float DEFAULT NULL,
-  `Poids` float DEFAULT NULL,
-  `Age` int DEFAULT NULL,
-  `Genre` enum('Masculin','Féminin','Autre') DEFAULT NULL,
-  `ObjectifCalorique` int DEFAULT NULL,
-  PRIMARY KEY (`ID_Profil`),
-  KEY `ID_Utilisateur` (`ID_Utilisateur`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `recette` (
+  `identifiant` int(11) NOT NULL,
+  `nom` varchar(255) DEFAULT NULL,
+  `description` text DEFAULT NULL,
+  `temps_preparation` int(11) DEFAULT NULL,
+  `temps_cuisson` int(11) DEFAULT NULL,
+  `calories_totales` int(11) DEFAULT NULL,
+  `cree_par` int(11) DEFAULT NULL,
+  `publique` tinyint(1) DEFAULT 1,
+  `type_repas` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `recettes`
+-- Structure de la table `recette_etape`
 --
 
-DROP TABLE IF EXISTS `recettes`;
-CREATE TABLE IF NOT EXISTS `recettes` (
-  `ID_Recette` int NOT NULL AUTO_INCREMENT,
-  `Nom` varchar(255) NOT NULL,
-  `Description` text,
-  `TempsPreparation` int DEFAULT NULL,
-  `TempsCuisson` int DEFAULT NULL,
-  `CaloriesTotales` int DEFAULT NULL,
-  `CreePar` int NOT NULL,
-  `Visibilite` enum('Public','Privé') NOT NULL,
-  `TypeRepas` varchar(255) DEFAULT NULL,
-  `DateCreation` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `DateMiseAJour` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ID_Recette`),
-  KEY `CreePar` (`CreePar`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `recettes`
---
-
-INSERT INTO `recettes` (`ID_Recette`, `Nom`, `Description`, `TempsPreparation`, `TempsCuisson`, `CaloriesTotales`, `CreePar`, `Visibilite`, `TypeRepas`, `DateCreation`, `DateMiseAJour`) VALUES
-(1, 'Chocolate Cake', 'Delicious and rich chocolate cake', 20, 30, 450, 1, 'Public', NULL, '2024-02-08 18:08:15', '2024-02-08 18:08:15');
+CREATE TABLE `recette_etape` (
+  `identifiant_etape` int(11) NOT NULL,
+  `identifiant_recette` int(11) NOT NULL,
+  `ordre` int(11) DEFAULT NULL,
+  `description` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `recettesingredients`
+-- Structure de la table `recette_evaluation`
 --
 
-DROP TABLE IF EXISTS `recettesingredients`;
-CREATE TABLE IF NOT EXISTS `recettesingredients` (
-  `ID_RecetteIngredient` int NOT NULL AUTO_INCREMENT,
-  `ID_Recette` int NOT NULL,
-  `ID_Ingredient` int NOT NULL,
-  `Quantite` float NOT NULL,
-  PRIMARY KEY (`ID_RecetteIngredient`),
-  UNIQUE KEY `ID_Recette` (`ID_Recette`,`ID_Ingredient`),
-  KEY `ID_Ingredient` (`ID_Ingredient`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `recette_evaluation` (
+  `identifiant_recette` int(11) DEFAULT NULL,
+  `identifiant_utilisateur` int(11) DEFAULT NULL,
+  `note` int(11) DEFAULT NULL,
+  `commentaire` varchar(255) DEFAULT NULL,
+  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `identifiant_image` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `roles`
+-- Structure de la table `recette_ingredient`
 --
 
-DROP TABLE IF EXISTS `roles`;
-CREATE TABLE IF NOT EXISTS `roles` (
-  `ID_Role` int NOT NULL AUTO_INCREMENT,
-  `Nom_Role` varchar(255) NOT NULL,
-  PRIMARY KEY (`ID_Role`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `recette_ingredient` (
+  `identifiant_recette` int(11) NOT NULL,
+  `indentifiant_ingredient` int(11) NOT NULL,
+  `quantite` float DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `utilisateurs`
+-- Structure de la table `role`
 --
 
-DROP TABLE IF EXISTS `utilisateurs`;
-CREATE TABLE IF NOT EXISTS `utilisateurs` (
-  `ID_Utilisateur` int NOT NULL AUTO_INCREMENT,
-  `Nom_Utilisateur` varchar(255) NOT NULL,
-  `Hash_MotDePasse` varchar(255) NOT NULL COMMENT 'Mot de passe haché avec un algorithme fort',
-  `Email` varchar(191) NOT NULL,
-  `DateCreation` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `DateMiseAJour` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ID_Utilisateur`),
-  UNIQUE KEY `Email` (`Email`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `utilisateurs`
---
-
-INSERT INTO `utilisateurs` (`ID_Utilisateur`, `Nom_Utilisateur`, `Hash_MotDePasse`, `Email`, `DateCreation`, `DateMiseAJour`) VALUES
-(1, 'ChefJohn', 'hashed_password_placeholder', 'chefjohn@example.com', '2024-02-08 18:08:15', '2024-02-08 18:08:15');
+CREATE TABLE `role` (
+  `identifiant` int(11) NOT NULL,
+  `nom` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `utilisateursroles`
+-- Structure de la table `utilisateur`
 --
 
-DROP TABLE IF EXISTS `utilisateursroles`;
-CREATE TABLE IF NOT EXISTS `utilisateursroles` (
-  `ID_UtilisateurRole` int NOT NULL AUTO_INCREMENT,
-  `ID_Utilisateur` int DEFAULT NULL,
-  `ID_Role` int DEFAULT NULL,
-  PRIMARY KEY (`ID_UtilisateurRole`),
-  UNIQUE KEY `ID_Utilisateur` (`ID_Utilisateur`,`ID_Role`),
-  KEY `ID_Role` (`ID_Role`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `utilisateur` (
+  `identifiant` int(11) NOT NULL,
+  `nom` varchar(255) DEFAULT NULL,
+  `mot_de_passe` varchar(255) DEFAULT NULL COMMENT 'hashed',
+  `email` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `utilisateur_consommation`
+--
+
+CREATE TABLE `utilisateur_consommation` (
+  `identifiant` int(11) NOT NULL,
+  `identifiant_utilisateur` int(11) DEFAULT NULL,
+  `identifiant_recette` int(11) DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `quantite` float DEFAULT NULL,
+  `type_repas` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `utilisateur_favoris`
+--
+
+CREATE TABLE `utilisateur_favoris` (
+  `identifiant_utilisateur` int(11) DEFAULT NULL,
+  `identifiant_recette` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `utilisateur_historique_recherche`
+--
+
+CREATE TABLE `utilisateur_historique_recherche` (
+  `identifiant` int(11) NOT NULL,
+  `identifiant_utilisateur` int(11) DEFAULT NULL,
+  `terme` varchar(255) DEFAULT NULL,
+  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `utilisateur_preference`
+--
+
+CREATE TABLE `utilisateur_preference` (
+  `identifiant_preference` int(11) NOT NULL,
+  `identifiant_utilisateur` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `utilisateur_profil`
+--
+
+CREATE TABLE `utilisateur_profil` (
+  `identifiant_utilisateur` int(11) DEFAULT NULL,
+  `taille` float DEFAULT NULL,
+  `poids` float DEFAULT NULL,
+  `age` int(11) DEFAULT NULL,
+  `sexe` varchar(255) DEFAULT NULL,
+  `objectif_calorique` int(11) DEFAULT NULL,
+  `identifiant_image` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `utilisateur_role`
+--
+
+CREATE TABLE `utilisateur_role` (
+  `identifiant_utilisateur` int(11) DEFAULT NULL,
+  `identifiant_role` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Index pour les tables déchargées
+--
+
+--
+-- Index pour la table `etape`
+--
+ALTER TABLE `etape`
+  ADD PRIMARY KEY (`identifiant`),
+  ADD KEY `identifiant_recette` (`identifiant_recette`);
+
+--
+-- Index pour la table `ingredient`
+--
+ALTER TABLE `ingredient`
+  ADD PRIMARY KEY (`identifiant`),
+  ADD KEY `ingredient_fk1` (`identifiant_image`);
+
+--
+-- Index pour la table `journalisation`
+--
+ALTER TABLE `journalisation`
+  ADD PRIMARY KEY (`ID_Log`),
+  ADD KEY `ID_Utilisateur` (`ID_Utilisateur`);
+
+--
+-- Index pour la table `preference`
+--
+ALTER TABLE `preference`
+  ADD PRIMARY KEY (`identifiant`);
+
+--
+-- Index pour la table `recette`
+--
+ALTER TABLE `recette`
+  ADD PRIMARY KEY (`identifiant`),
+  ADD KEY `recette_ibfk_1` (`cree_par`);
+
+--
+-- Index pour la table `recette_etape`
+--
+ALTER TABLE `recette_etape`
+  ADD KEY `identifiant_etape` (`identifiant_etape`),
+  ADD KEY `identifiant_recette` (`identifiant_recette`);
+
+--
+-- Index pour la table `recette_evaluation`
+--
+ALTER TABLE `recette_evaluation`
+  ADD KEY `recette_evaluation_ibfk_1` (`identifiant_recette`),
+  ADD KEY `recette_evaluation_ibfk_2` (`identifiant_utilisateur`),
+  ADD KEY `recette_evaluation_ibfk_3` (`identifiant_image`);
+
+--
+-- Index pour la table `recette_ingredient`
+--
+ALTER TABLE `recette_ingredient`
+  ADD KEY `recette_ingredient_ibfk_1` (`identifiant_recette`),
+  ADD KEY `recette_ingredient_ibfk_2` (`indentifiant_ingredient`);
+
+--
+-- Index pour la table `role`
+--
+ALTER TABLE `role`
+  ADD PRIMARY KEY (`identifiant`);
+
+--
+-- Index pour la table `utilisateur`
+--
+ALTER TABLE `utilisateur`
+  ADD PRIMARY KEY (`identifiant`);
+
+--
+-- Index pour la table `utilisateur_consommation`
+--
+ALTER TABLE `utilisateur_consommation`
+  ADD PRIMARY KEY (`identifiant`),
+  ADD KEY `utilisateur_consommation_ibfk_1` (`identifiant_utilisateur`),
+  ADD KEY `utilisateur_consommation_ibfk_2` (`identifiant_recette`);
+
+--
+-- Index pour la table `utilisateur_favoris`
+--
+ALTER TABLE `utilisateur_favoris`
+  ADD KEY `ID_Utilisateur` (`identifiant_utilisateur`),
+  ADD KEY `ID_Recette` (`identifiant_recette`);
+
+--
+-- Index pour la table `utilisateur_historique_recherche`
+--
+ALTER TABLE `utilisateur_historique_recherche`
+  ADD PRIMARY KEY (`identifiant`),
+  ADD KEY `ID_Utilisateur` (`identifiant_utilisateur`);
+
+--
+-- Index pour la table `utilisateur_preference`
+--
+ALTER TABLE `utilisateur_preference`
+  ADD KEY `utilisateur_preference_ibfk_1` (`identifiant_utilisateur`),
+  ADD KEY `fk_preference` (`identifiant_preference`);
+
+--
+-- Index pour la table `utilisateur_profil`
+--
+ALTER TABLE `utilisateur_profil`
+  ADD KEY `utilisateur_profil_ibfk_1` (`identifiant_utilisateur`),
+  ADD KEY `utilisateur_profil_ibfk_2` (`identifiant_image`);
+
+--
+-- Index pour la table `utilisateur_role`
+--
+ALTER TABLE `utilisateur_role`
+  ADD KEY `utilisateur_role_ibfk_1` (`identifiant_utilisateur`),
+  ADD KEY `utilisateur_role_ibfk_2` (`identifiant_role`);
+
+--
+-- AUTO_INCREMENT pour les tables déchargées
+--
+
+--
+-- AUTO_INCREMENT pour la table `etape`
+--
+ALTER TABLE `etape`
+  MODIFY `identifiant` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `ingredient`
+--
+ALTER TABLE `ingredient`
+  MODIFY `identifiant` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `preference`
+--
+ALTER TABLE `preference`
+  MODIFY `identifiant` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `recette`
+--
+ALTER TABLE `recette`
+  MODIFY `identifiant` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `role`
+--
+ALTER TABLE `role`
+  MODIFY `identifiant` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `utilisateur`
+--
+ALTER TABLE `utilisateur`
+  MODIFY `identifiant` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `utilisateur_consommation`
+--
+ALTER TABLE `utilisateur_consommation`
+  MODIFY `identifiant` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `utilisateur_historique_recherche`
+--
+ALTER TABLE `utilisateur_historique_recherche`
+  MODIFY `identifiant` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Contraintes pour les tables déchargées
+--
+
+--
+-- Contraintes pour la table `etape`
+--
+ALTER TABLE `etape`
+  ADD CONSTRAINT `fk_1` FOREIGN KEY (`identifiant_recette`) REFERENCES `recette` (`identifiant`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `ingredient`
+--
+ALTER TABLE `ingredient`
+  ADD CONSTRAINT `ingredient_fk1` FOREIGN KEY (`identifiant_image`) REFERENCES `image` (`identifiant`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `journalisation`
+--
+ALTER TABLE `journalisation`
+  ADD CONSTRAINT `journalisation_ibfk_1` FOREIGN KEY (`ID_Utilisateur`) REFERENCES `utilisateur` (`identifiant`);
+
+--
+-- Contraintes pour la table `recette`
+--
+ALTER TABLE `recette`
+  ADD CONSTRAINT `recette_ibfk_1` FOREIGN KEY (`cree_par`) REFERENCES `utilisateur` (`identifiant`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `recette_etape`
+--
+ALTER TABLE `recette_etape`
+  ADD CONSTRAINT `recette_etape_ibfk_1` FOREIGN KEY (`identifiant_recette`) REFERENCES `recette` (`identifiant`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `recette_etape_ibfk_2` FOREIGN KEY (`identifiant_etape`) REFERENCES `etape` (`identifiant`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `recette_evaluation`
+--
+ALTER TABLE `recette_evaluation`
+  ADD CONSTRAINT `recette_evaluation_ibfk_1` FOREIGN KEY (`identifiant_recette`) REFERENCES `recette` (`identifiant`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `recette_evaluation_ibfk_2` FOREIGN KEY (`identifiant_utilisateur`) REFERENCES `utilisateur` (`identifiant`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `recette_evaluation_ibfk_3` FOREIGN KEY (`identifiant_image`) REFERENCES `image` (`identifiant`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `recette_ingredient`
+--
+ALTER TABLE `recette_ingredient`
+  ADD CONSTRAINT `recette_ingredient_ibfk_1` FOREIGN KEY (`identifiant_recette`) REFERENCES `recette` (`identifiant`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `recette_ingredient_ibfk_2` FOREIGN KEY (`indentifiant_ingredient`) REFERENCES `ingredient` (`identifiant`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `utilisateur_consommation`
+--
+ALTER TABLE `utilisateur_consommation`
+  ADD CONSTRAINT `utilisateur_consommation_ibfk_1` FOREIGN KEY (`identifiant_utilisateur`) REFERENCES `utilisateur` (`identifiant`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `utilisateur_consommation_ibfk_2` FOREIGN KEY (`identifiant_recette`) REFERENCES `recette` (`identifiant`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `utilisateur_favoris`
+--
+ALTER TABLE `utilisateur_favoris`
+  ADD CONSTRAINT `utilisateur_favoris_ibfk_1` FOREIGN KEY (`identifiant_utilisateur`) REFERENCES `utilisateur` (`identifiant`),
+  ADD CONSTRAINT `utilisateur_favoris_ibfk_2` FOREIGN KEY (`identifiant_recette`) REFERENCES `recette` (`identifiant`);
+
+--
+-- Contraintes pour la table `utilisateur_historique_recherche`
+--
+ALTER TABLE `utilisateur_historique_recherche`
+  ADD CONSTRAINT `utilisateur_historique_recherche_ibfk_1` FOREIGN KEY (`identifiant_utilisateur`) REFERENCES `utilisateur` (`identifiant`);
+
+--
+-- Contraintes pour la table `utilisateur_preference`
+--
+ALTER TABLE `utilisateur_preference`
+  ADD CONSTRAINT `fk_preference` FOREIGN KEY (`identifiant_preference`) REFERENCES `preference` (`identifiant`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `utilisateur_preference_ibfk_1` FOREIGN KEY (`identifiant_utilisateur`) REFERENCES `utilisateur` (`identifiant`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `utilisateur_profil`
+--
+ALTER TABLE `utilisateur_profil`
+  ADD CONSTRAINT `utilisateur_profil_ibfk_1` FOREIGN KEY (`identifiant_utilisateur`) REFERENCES `utilisateur` (`identifiant`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `utilisateur_profil_ibfk_2` FOREIGN KEY (`identifiant_image`) REFERENCES `image` (`identifiant`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `utilisateur_role`
+--
+ALTER TABLE `utilisateur_role`
+  ADD CONSTRAINT `utilisateur_role_ibfk_1` FOREIGN KEY (`identifiant_utilisateur`) REFERENCES `utilisateur` (`identifiant`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `utilisateur_role_ibfk_2` FOREIGN KEY (`identifiant_role`) REFERENCES `role` (`identifiant`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
