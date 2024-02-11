@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : dim. 11 fév. 2024 à 21:01
+-- Généré le : dim. 11 fév. 2024 à 21:13
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -31,6 +31,18 @@ CREATE TABLE `etape` (
   `identifiant` int(11) NOT NULL,
   `description` varchar(255) NOT NULL,
   `identifiant_recette` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `image`
+--
+
+CREATE TABLE `image` (
+  `identifiant` int(11) NOT NULL,
+  `lien` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -119,6 +131,17 @@ CREATE TABLE `recette_evaluation` (
   `commentaire` varchar(255) DEFAULT NULL,
   `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `identifiant_image` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `recette_image`
+--
+
+CREATE TABLE `recette_image` (
+  `identifiant_recette` int(11) NOT NULL,
+  `identifiant_image` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -246,6 +269,12 @@ ALTER TABLE `etape`
   ADD KEY `identifiant_recette` (`identifiant_recette`);
 
 --
+-- Index pour la table `image`
+--
+ALTER TABLE `image`
+  ADD PRIMARY KEY (`identifiant`);
+
+--
 -- Index pour la table `ingredient`
 --
 ALTER TABLE `ingredient`
@@ -286,6 +315,13 @@ ALTER TABLE `recette_evaluation`
   ADD KEY `recette_evaluation_ibfk_1` (`identifiant_recette`),
   ADD KEY `recette_evaluation_ibfk_2` (`identifiant_utilisateur`),
   ADD KEY `recette_evaluation_ibfk_3` (`identifiant_image`);
+
+--
+-- Index pour la table `recette_image`
+--
+ALTER TABLE `recette_image`
+  ADD KEY `recette_image_fk1` (`identifiant_image`),
+  ADD KEY `recette_image_fk2` (`identifiant_recette`);
 
 --
 -- Index pour la table `recette_ingredient`
@@ -357,6 +393,12 @@ ALTER TABLE `utilisateur_role`
 -- AUTO_INCREMENT pour la table `etape`
 --
 ALTER TABLE `etape`
+  MODIFY `identifiant` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `image`
+--
+ALTER TABLE `image`
   MODIFY `identifiant` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -443,6 +485,13 @@ ALTER TABLE `recette_evaluation`
   ADD CONSTRAINT `recette_evaluation_ibfk_1` FOREIGN KEY (`identifiant_recette`) REFERENCES `recette` (`identifiant`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `recette_evaluation_ibfk_2` FOREIGN KEY (`identifiant_utilisateur`) REFERENCES `utilisateur` (`identifiant`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `recette_evaluation_ibfk_3` FOREIGN KEY (`identifiant_image`) REFERENCES `image` (`identifiant`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `recette_image`
+--
+ALTER TABLE `recette_image`
+  ADD CONSTRAINT `recette_image_fk1` FOREIGN KEY (`identifiant_image`) REFERENCES `image` (`identifiant`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `recette_image_fk2` FOREIGN KEY (`identifiant_recette`) REFERENCES `recette` (`identifiant`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `recette_ingredient`
