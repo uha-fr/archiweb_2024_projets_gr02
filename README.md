@@ -23,7 +23,7 @@ Pour mettre en place et démarrer avec **Manger**, suivez ces étapes :
 2. Utilisez WAMP Server pour démarrer vos services Apache et MySQL.
 3. Importez la base de données en utilisant MySQL :
     - Lancez le gestionnaire de base de données MySQL via WAMP.
-    - Créez une nouvelle base de données nommée  **manger-db** .
+    - Construire une nouvelle base de données nommée  **manger-db** .
     - Importez le fichier `.sql` fourni dans le dépôt pour structurer votre base de données.
 4. Configurez votre fichier d'environnement :
     - Accédez à `archiweb_2024_projets_gr02-main/webapp/src/Model/` et ouvrez `Dadabase.php`.
