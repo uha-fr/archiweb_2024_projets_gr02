@@ -1,0 +1,5 @@
+RewriteEngine On
+RewriteBase /archiweb_2024_projets_gr02-main/webapp/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]
