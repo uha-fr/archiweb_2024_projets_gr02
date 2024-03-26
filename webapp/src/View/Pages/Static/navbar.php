@@ -27,7 +27,7 @@
             </ul>
           </li>
 
-          <li><a href="/archiweb_2024_projets_gr02-main/webapp/ajouterRecette">Publier recette</a></li>
+          <li><a href="/archiweb_2024_projets_gr02-main/webapp/ajouterRecetteForm">Publier recette</a></li>
           <li><a href="/archiweb_2024_projets_gr02-main/webapp/contact">Contact nutritionniste</a></li>
         </ul>
       </nav><!-- .navbar -->
@@ -35,7 +35,7 @@
       <?php if((isset($_SESSION['connexion']) && $_SESSION['connexion']==false) || !isset($_SESSION['connexion']))
               echo '<a class="btn-book-a-table" href="/archiweb_2024_projets_gr02-main/webapp/login"><i class="bi bi-box-arrow-in-right"></i> Log in</a>';
             else
-              echo '<a class="btn-book-a-table" href="/archiweb_2024_projets_gr02-main/webapp/logout"><i class="bi bi-box-arrow-in-left"></i> Log out</a>';
+              echo 'Bonjour ' . $_SESSION['user'] . '<a class="btn-book-a-table" href="/archiweb_2024_projets_gr02-main/webapp/logout"><i class="bi bi-box-arrow-in-left"></i> Log out</a>';
       ?>
     
       <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>

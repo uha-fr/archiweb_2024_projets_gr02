@@ -23,8 +23,9 @@ class LoginController
 
         if ($user) {
             $_SESSION['user'] = $username; 
+            $_SESSION['id'] = $user['identifiant']; 
             $_SESSION['error'] = "bon";
-            $_SESSION['connexion'] =true;
+            $_SESSION['connexion'] = true;
             header("Location:  /archiweb_2024_projets_gr02-main/webapp"); 
             exit; 
         } else {

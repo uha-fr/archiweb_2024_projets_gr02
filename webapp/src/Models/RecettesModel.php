@@ -3,11 +3,48 @@ require MODELSDIR.DS.'Base.php';
 
 class RecettesModel extends Base
 {
+    public function getAllIngredients() {
+        $query = $this->pdo->prepare("SELECT identifiant , nom FROM INGREDIENT");
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
     public function getAllRecette()
     {
         $query = $this->pdo->prepare("SELECT * FROM recette");
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    function ajouterRecette($name,$prepa,$cuisson,$type,$ingredients,$quantities,$measures,$step)
+    {
+       // Insertion de la recette dans la table RECETTE
+       $stmt = $this->pdo->prepare("INSERT INTO recette (nom, temps_preparation,temps_cuisson,publie_par,type_repas) VALUES (?,?,?,?,?)");
+       $stmt->execute([$name, $prepa,$cuisson,$_SESSION['id'],$type]);
+       // Récupération de l'ID de la recette insérée
+       $recette_id = $this->pdo->lastInsertId();
+
+       // Insertion des étapes dans la table ETAPES
+       foreach ($steps as $step) {
+           $stmt = $this->pdo->prepare("INSERT INTO etape (identifiant_recette, description) VALUES (?, ?)");
+           $stmt->execute([$recette_id, $step]);
+       }
+
+       // Insertion des ingrédients dans la table INGREDIENT_RECETTE avec les quantités associées
+       foreach ($ingredients as $key => $ingredient_id) {
+           $quantity = $quantities[$key];
+
+           $stmt = $this->pdo->prepare("INSERT INTO recette_ingredient (identifiant_recette, indentifiant_ingredient, quantite) VALUES (?, ?, ?)");
+           $stmt->execute([$recette_id, $ingredient_id, $quantity]);
+       }
+
+       // Répondre avec un message de succès ou d'échec (à adapter selon vos besoins)
+       if ($stmt) {
+           echo "La recette a été ajoutée avec succès!";
+       } else {
+           echo "Erreur lors de l'ajout de la recette.";
+       }
+
     }
 
     public function getRecetteAvance($queryParams)

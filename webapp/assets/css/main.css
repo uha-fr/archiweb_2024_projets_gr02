@@ -1651,3 +1651,31 @@ section {
 .footer .credits a {
   color: #fff;
 }
+
+.remove-ingredient,
+#addIngredient {
+    color: blue; /* Couleur rouge pour la corbeille */
+    background-color: transparent;
+    border: none;
+}
+
+.remove-ingredient .bi {
+    color: red; /* Couleur rouge pour la corbeille */
+    opacity: 0.8; /* Opacité de l'icône */
+    font-size: 20px;
+}
+
+
+
+.remove-step,
+#addStep {
+    color: blue; /* Couleur rouge pour la corbeille */
+    background-color: transparent;
+    border: none;
+}
+
+.remove-step .bi {
+    color: red; /* Couleur rouge pour la corbeille */
+    opacity: 0.8; /* Opacité de l'icône */
+    font-size: 20px;
+}

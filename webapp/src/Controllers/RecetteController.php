@@ -4,12 +4,26 @@ class RecetteController
 {
     function ajouterRecetteForm()
     {
-        require VIEWSDIR.DS.'RecetteView.php';
-        $v = new RecetteView();
-        $html = $v->viewAddHTML();
+         require_once MODELSDIR.DS.'RecettesModel.php';
+         $v = new RecettesModel();
+         $ingredients = $v->getAllIngredients();
+ 
+         // Inclure la vue RecetteView
+         require_once VIEWSDIR.DS.'RecetteView.php';
+         $v = new RecetteView();
+         $html = $v->viewAddHTML($ingredients);
+ 
+         echo $html;
+         http_response_code(200);
+    }
 
-        echo $html;
-        http_response_code(200);
+    function ajouterRecette($name,$prepa,$cuisson,$type,$ingredients,$quantities,$measures,$step)
+    {
+        require_once MODELSDIR.DS.'RecettesModel.php';
+        $v = new RecettesModel();
+        $v->ajouterRecette($name,$prepa,$cuisson,$type,$ingredients,$quantities,$measures,$step);
+
+        header("Location:  /archiweb_2024_projets_gr02-main/webapp"); 
     }
 
     function rechercherRecettes()

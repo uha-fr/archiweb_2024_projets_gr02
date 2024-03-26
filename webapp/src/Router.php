@@ -16,7 +16,6 @@ class Router
 
     function ManageRequest($request,$queryParams)// TRES IMPORTANT: La méthode prend en paramètre la route ET un tableau avec tous les paramètre GET
     {
-       
         if($request == '/archiweb_2024_projets_gr02-main/webapp/')
         {
             require CONTROLLERSDIR.DS.'HomeController.php';
@@ -89,12 +88,30 @@ class Router
             $c = new UserController();
             $c->consommations();
         }
-        else  if($request == '/archiweb_2024_projets_gr02-main/webapp/ajouterRecette')
+        else  if($request == '/archiweb_2024_projets_gr02-main/webapp/ajouterRecetteForm')
         {
             $this->middleware();
             require CONTROLLERSDIR.DS.'RecetteController.php';
             $c = new RecetteController();
             $c->ajouterRecetteForm();
+        }
+        else  if($request == '/archiweb_2024_projets_gr02-main/webapp/ajouterRecette')
+        {
+            $this->middleware();
+            require CONTROLLERSDIR.DS.'RecetteController.php';
+
+            $name = $_POST["name"];
+            $prepa = $_POST["prepa"];
+            $cuisson = $_POST["cuisson"];
+            $type = $_POST["type"];
+            $step = $_POST["step"];
+
+            $ingredients = $_POST["ingredient"];
+            $quantities = $_POST["quantity"];
+            $measures = $_POST["measure"];
+
+            $c = new RecetteController();
+            $c->ajouterRecette($name,$prepa,$cuisson,$type,$ingredients,$quantities,$measures,$step);
         }
         else  if($request == '/archiweb_2024_projets_gr02-main/webapp/tendance')
         {

@@ -17,7 +17,7 @@ class RecetteView
         return $html;
     }
 
-    function loadviewAdd()  
+    function loadviewAdd($ingredients)  
     {
         ob_start();
         require VIEWSDIR.DS.'Pages'.DS.'ajouterRecette.php';
@@ -25,9 +25,9 @@ class RecetteView
         return $out;
     }
 
-    function viewAddHTML()
+    function viewAddHTML($ingredients)
     {
-        $html = $this->loadviewAdd();
+        $html = $this->loadviewAdd($ingredients);
         return $html;
     }
 
